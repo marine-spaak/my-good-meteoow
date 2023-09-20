@@ -1,8 +1,13 @@
 import { ScrollView, Text } from 'react-native';
+import style from './Home.style';
+
+import { HomeCurrentCity, HomeNow, HomeNextDays } from '../../components';
 
 const Home = () => (
   <ScrollView>
-    <Text>Mon Home</Text>
+    <HomeCurrentCity />
+    <HomeNow />
+    <HomeNextDays />
   </ScrollView>
 );
 
