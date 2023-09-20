@@ -15,6 +15,13 @@ const style = StyleSheet.create({
     color: COLORS.white,
   },
 
+  homeSectionTitle: {
+    color: COLORS.white,
+    fontSize: SIZES.large,
+    fontWeight: 'bold',
+    marginBottom: SIZES.small,
+  },
+
 });
 
 export default style;

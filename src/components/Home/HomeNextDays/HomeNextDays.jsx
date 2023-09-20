@@ -3,7 +3,8 @@ import style from '../Home.style';
 
 const HomeNextDays = () => (
   <View style={style.homeSectionContainer}>
-    <Text style={style.homeSectionText}>Prochains jours</Text>
+    <Text style={style.homeSectionTitle}>Prochains jours</Text>
+    <Text style={style.homeSectionText}>À compléter</Text>
   </View>
 );
 

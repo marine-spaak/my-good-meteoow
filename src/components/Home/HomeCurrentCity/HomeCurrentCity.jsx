@@ -1,12 +1,17 @@
+import PropTypes from 'prop-types';
+
 import { View, Text } from 'react-native';
 import style from '../Home.style';
 
-const HomeCurrentCity = () => (
+const HomeCurrentCity = ({ city }) => (
   <View style={style.homeSectionContainer}>
-    <Text style={style.homeSectionText}>HomeCurrentCity</Text>
-    <Text style={style.homeSectionText}>La ville actuelle est :</Text>
-    <Text style={style.homeSectionText}>CURRENT CITY</Text>
+    <Text style={style.homeSectionTitle}>Ville</Text>
+    <Text style={style.homeSectionText}>{city}</Text>
   </View>
 );
+
+HomeCurrentCity.propTypes = {
+  city: PropTypes.string.isRequired,
+};
 
 export default HomeCurrentCity;
