@@ -6,13 +6,15 @@ import {
   ScrollView, Platform, Linking, Alert,
 } from 'react-native';
 
+// ? À voir si je dois remettre ceci
 // Cela permet de récupérer le token de notifications (ajout après vidéo Expo Push Notifications)
-import registerNNPushToken from 'native-notify';
+// import registerNNPushToken from 'native-notify';
 
 // Importation des modules nécessaires aux notifications
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { isDevice } from 'expo-device';
+import Constants from 'expo-constants';
 
 import { HomeCurrentCity, HomeNow, HomeNextDays } from '..';
 import style from './Home.style';
@@ -94,9 +96,11 @@ async function registerForPushNotificationsAsync() {
 // #endregion
 
 const Home = () => {
-  // TODO define APIkey and PushToken as an environment variable
+  // ? À voir si je dois remettre ceci
+  // registerNNPushToken(12399, '3Zc1qAo6STNOM39kwWRbb3');
+
+  // TODO define APIkey as an environment variable
   const APIkey = 'fd398fa8f15a0f5c87e77b1a8b00e4e7';
-  registerNNPushToken(12399, '3Zc1qAo6STNOM39kwWRbb3');
 
   const [loading, setLoading] = useState(false);
 
