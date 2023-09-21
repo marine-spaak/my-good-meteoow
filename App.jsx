@@ -30,15 +30,18 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
+  const [temperature, setTemperature] = useState(-900);
+
   async function schedulePushNotification() {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'La température a changé',
-        body: 'Il fait bon',
-        // data: { data: 'goes here' },
-      },
-      trigger: { seconds: 2 },
-    });
+    if (temperature !== -900) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: (temperature > 20) ? '🙂 Il fait bon !' : '🥶 Il fait frais !',
+          body: (temperature > 20) ? 'La température est supérieure à 20°.' : 'La température est inférieure à 20°.',
+        },
+        trigger: { seconds: 2 },
+      });
+    }
   }
 
   async function registerForPushNotificationsAsync() {
@@ -99,41 +102,19 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    schedulePushNotification();
+  }, [temperature]);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={style.appContainer}>
         <Header />
-        <Home />
-
-        <Button
-          title="Press to schedule a notification"
-          onPress={async () => {
-            await schedulePushNotification();
-          }}
+        <Home
+          temperature={temperature}
+          setTemperature={setTemperature}
         />
-
       </SafeAreaView>
     </SafeAreaProvider>
-
-  // <View
-  //   style={{
-  //     flex: 1,
-  //     alignItems: 'center',
-  //     justifyContent: 'space-around',
-  //   }}
-  // >
-  //   <Text>Your expo push token: {expoPushToken}</Text>
-  //   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-  //     <Text>Title: {notification && notification.request.content.title} </Text>
-  //     <Text>Body: {notification && notification.request.content.body}</Text>
-  //     <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-  //   </View>
-    // <Button
-    //   title="Press to schedule a notification"
-    //   onPress={async () => {
-    //     await schedulePushNotification();
-    //   }}
-    // />
-  // </View>
   );
 }

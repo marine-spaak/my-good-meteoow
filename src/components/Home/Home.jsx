@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Location from 'expo-location';
+import PropTypes from 'prop-types';
 
 import { ScrollView } from 'react-native';
 
 import { HomeCurrentCity, HomeNow, HomeNextDays } from '..';
 import style from './Home.style';
 
-const Home = () => {
+const Home = ({ temperature, setTemperature }) => {
   // TODO define APIkey as an environment variable
   const APIkey = 'fd398fa8f15a0f5c87e77b1a8b00e4e7';
 
   const [loading, setLoading] = useState(false);
 
   const [city, setCity] = useState('CURRENT CITY');
-  const [temp, setTemp] = useState(0);
 
   const getWeatherFromApi = async (latitude, longitude) => {
     try {
@@ -25,7 +25,7 @@ const Home = () => {
 
       console.log(response.data);
       setCity(response.data.name);
-      setTemp(response.data.main.temp);
+      setTemperature(response.data.main.temp);
     } catch (error) {
       console.log('Error:', error);
     }
@@ -66,13 +66,18 @@ const Home = () => {
       />
 
       <HomeNow
-        temp={temp}
+        temperature={temperature}
         loading={loading}
       />
 
       <HomeNextDays />
     </ScrollView>
   );
+};
+
+Home.propTypes = {
+  temperature: PropTypes.number.isRequired,
+  setTemperature: PropTypes.func.isRequired,
 };
 
 export default Home;
