@@ -94,8 +94,10 @@ async function registerForPushNotificationsAsync() {
 // #endregion
 
 const Home = () => {
-  // TODO define APIkey as an environment variable
+  // TODO define APIkey and PushToken as an environment variable
   const APIkey = 'fd398fa8f15a0f5c87e77b1a8b00e4e7';
+  registerNNPushToken(12399, '3Zc1qAo6STNOM39kwWRbb3');
+
   const [loading, setLoading] = useState(false);
 
   const [city, setCity] = useState('CURRENT CITY');
