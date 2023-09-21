@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
   Text, View, Button, Platform, Linking, Alert,
 } from 'react-native';
@@ -10,6 +11,10 @@ import registerNNPushToken from 'native-notify';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { isDevice } from 'expo-device';
+
+import Home from './src/components/Home/Home';
+import { Header } from './src/components';
+import style from './App.style';
 
 //  Configuration des notifications
 Notifications.setNotificationHandler({
@@ -85,9 +90,9 @@ async function registerForPushNotificationsAsync() {
 }
 
 export default function App() {
-  const [temperature, setTemperature] = useState(0);
+  const [temp, setTemp] = useState(0);
   const setTemperatureToTwentyOne = () => {
-    setTemperature(21);
+    setTemp(21);
   };
 
   // Ajout après la vidéo Expo Push Notification
@@ -122,24 +127,30 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log('La température a changé et vaut maintenant : ', temperature);
-    launchTemperatureNotification();
-  }, [temperature]);
+    console.log('La température a changé et vaut maintenant : ', temp);
+    if (temp > 19) {
+      launchTemperatureNotification();
+    }
+  }, [temp]);
 
   // Le composant à proprement parler :
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
-      {/* <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      /> */}
+  // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
 
-      <Button
-        title="Press to set temperature to 21"
-        onPress={setTemperatureToTwentyOne}
-      />
-    </View>
+  //   <Button
+  //     title="Press to set temperature to 21"
+  //     onPress={setTemperatureToTwentyOne}
+  //   />
+  // </View>
+
+    <SafeAreaProvider>
+      <SafeAreaView style={style.appContainer}>
+        <Header />
+        <Home
+          temp={temp}
+          setTemp={setTemp}
+        />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

@@ -3,6 +3,10 @@
     "name": "my-good-meteoow",
     "slug": "my-good-meteoow",
     "version": "1.0.0",
+    "permissions": [
+      "CAMERA",
+      "LOCATION"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
