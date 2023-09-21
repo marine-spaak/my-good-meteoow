@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Location from 'expo-location';
-import { Toast } from 'toastify-react-native';
 
 import { ScrollView } from 'react-native';
 import style from './Home.style';
@@ -52,26 +51,10 @@ const Home = () => {
     }
   };
 
-  // Renvoie true si la T° est au-dessus de 20°
-  const sendToastCommentingTemperature = (temperature) => {
-    if (temperature < 20) {
-      Toast.info('Il fait froid');
-    } else {
-      Toast.info('Il fait bon');
-    }
-  };
-
   useEffect(() => {
     // J'appelle la fonction que je viens de créer :
     getPermissions();
   }, []);
-
-  // Dans un autre useEffect, je surveille la température
-  // J'envoie une notification commentant la température :
-  // <20° --> "Il fait froid" / >20° "Il fait bon"
-  useEffect(() => {
-    sendToastCommentingTemperature(temp);
-  }, [temp]);
 
   return (
     <ScrollView>
