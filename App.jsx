@@ -2,10 +2,17 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { useState, useEffect, useRef } from 'react';
+
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
   Text, View, Button, Platform, Linking, Alert,
 } from 'react-native';
-import registerNNPushToken from 'native-notify';
+// import registerNNPushToken from 'native-notify';
+
+import { Header } from './src/components';
+import Home from './src/components/Home/Home';
+
+import style from './src/components/Home/Home.style';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -16,7 +23,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
-  registerNNPushToken(12343, 'QL5K0bhCGVorcMX8cD0buF');
+  // registerNNPushToken(12343, 'QL5K0bhCGVorcMX8cD0buF');
 
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
@@ -26,9 +33,9 @@ export default function App() {
   async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "You've got mail! 📬",
-        body: 'Here is the notification body',
-        data: { data: 'goes here' },
+        title: 'La température a changé',
+        body: 'Il fait bon',
+        // data: { data: 'goes here' },
       },
       trigger: { seconds: 2 },
     });
@@ -38,7 +45,7 @@ export default function App() {
     let token;
     console.log('token at start', token);
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
         const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -93,34 +100,40 @@ export default function App() {
   }, []);
 
   return (
+    <SafeAreaProvider>
+      <SafeAreaView style={style.appContainer}>
+        <Header />
+        <Home />
 
+        <Button
+          title="Press to schedule a notification"
+          onPress={async () => {
+            await schedulePushNotification();
+          }}
+        />
 
-  // <SafeAreaProvider>
-  // <SafeAreaView style={style.appContainer}>
-  //   <Header />
-  //   <Home />
-  // </SafeAreaView>
-  // </SafeAreaProvider>
+      </SafeAreaView>
+    </SafeAreaProvider>
 
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-      }}
-    >
-      <Text>Your expo push token: {expoPushToken}</Text>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-      </View>
-      <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      />
-    </View>
+  // <View
+  //   style={{
+  //     flex: 1,
+  //     alignItems: 'center',
+  //     justifyContent: 'space-around',
+  //   }}
+  // >
+  //   <Text>Your expo push token: {expoPushToken}</Text>
+  //   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+  //     <Text>Title: {notification && notification.request.content.title} </Text>
+  //     <Text>Body: {notification && notification.request.content.body}</Text>
+  //     <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+  //   </View>
+    // <Button
+    //   title="Press to schedule a notification"
+    //   onPress={async () => {
+    //     await schedulePushNotification();
+    //   }}
+    // />
+  // </View>
   );
 }

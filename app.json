@@ -15,16 +15,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.marine.spaak.mygoodmeteoow"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": ".src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.marine.spaak.mygoodmeteoow"
     },
     "web": {
       "favicon": ".src/assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "05b9f175-9e0b-4855-a5f3-b7174b08ebe3"
+      }
     }
   }
 }
