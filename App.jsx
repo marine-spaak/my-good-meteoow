@@ -22,16 +22,17 @@ Notifications.setNotificationHandler({
 
 // Fonction asynchrone numéro 1
 // Lance une notif avec un délai défini en secondes
-async function schedulePushNotification() {
+async function launchTemperatureNotification() {
+  console.log("déclenchement de l'envoi de notif");
   // On attend que la fonction suivante se termine avant de continuer l'exécution
   // C'est une fonction fournie par expo-notifications pour planifier l'envoi
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Il pleut !',
-      body: 'Sortez les parapluies',
+      title: 'Nouvelle température',
+      body: 'Il fait bon',
       // data: { data: 'goes here' },
     },
-    trigger: { seconds: 1 },
+    trigger: { seconds: 2 },
   });
 }
 
@@ -84,6 +85,11 @@ async function registerForPushNotificationsAsync() {
 }
 
 export default function App() {
+  const [temperature, setTemperature] = useState(0);
+  const setTemperatureToTwentyOne = () => {
+    setTemperature(21);
+  };
+
   // Ajout après la vidéo Expo Push Notification
   registerNNPushToken(12399, '3Zc1qAo6STNOM39kwWRbb3');
 
@@ -115,28 +121,24 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log('La température a changé et vaut maintenant : ', temperature);
+    launchTemperatureNotification();
+  }, [temperature]);
+
   // Le composant à proprement parler :
-  // Affiche le jeton, le titre, corps, données de la dernière notif
-  // Bouton pour planifier l'envoi de notifications
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-      }}
-    >
-      <Text>Your expo push token: {expoPushToken}</Text>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-      </View>
-      <Button
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
+      {/* <Button
         title="Press to schedule a notification"
         onPress={async () => {
           await schedulePushNotification();
         }}
+      /> */}
+
+      <Button
+        title="Press to set temperature to 21"
+        onPress={setTemperatureToTwentyOne}
       />
     </View>
   );
