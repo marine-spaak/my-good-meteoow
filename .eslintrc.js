@@ -9,17 +9,19 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'react/function-component-definition': [
-      2,
-      {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
-      },
-    ],
+    // 'react/function-component-definition': [
+    //   2,
+    //   {
+    //     namedComponents: 'arrow-function',
+    //     unnamedComponents: 'arrow-function',
+    //   },
+    // ],
+    'react/function-component-definition': 'off',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',
     'react/no-unescaped-entities': 'warn',
+    'react/jsx-one-expression-per-line': 'off',
     'react/forbid-prop-types': 'warn',
     'no-unused-vars': 'warn',
     'no-param-reassign': 'warn',
