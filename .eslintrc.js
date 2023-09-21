@@ -28,5 +28,6 @@ module.exports = {
     'import/no-cycle': 'warn',
     'arrow-body-style': 'warn',
     'consistent-return': 'warn',
+    'no-shadow': 'warn',
   },
 };
