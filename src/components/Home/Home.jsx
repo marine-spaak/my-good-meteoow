@@ -1,10 +1,13 @@
+// Imports nécessaires pour faire tourner l'app
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import * as Location from 'expo-location';
 import PropTypes from 'prop-types';
 
-import { ScrollView } from 'react-native';
+// Accès à la localisation de l'appareil
+import * as Location from 'expo-location';
 
+// Composants basiques, sous-composants et style
+import { ScrollView } from 'react-native';
 import { HomeCurrentCity, HomeNow, HomeNextDays } from '..';
 import style from './Home.style';
 
@@ -12,8 +15,8 @@ const Home = ({ temperature, setTemperature }) => {
   // TODO define APIkey as an environment variable
   const APIkey = 'fd398fa8f15a0f5c87e77b1a8b00e4e7';
 
+  // Le "loading" permet d'afficher un chargement le temps d'avoir la réponse de l'API
   const [loading, setLoading] = useState(false);
-
   const [city, setCity] = useState('CURRENT CITY');
 
   const getWeatherFromApi = async (latitude, longitude) => {
@@ -22,12 +25,10 @@ const Home = ({ temperature, setTemperature }) => {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${APIkey}&units=metric`,
       );
-
-      console.log(response.data);
       setCity(response.data.name);
       setTemperature(response.data.main.temp);
     } catch (error) {
-      console.log('Error:', error);
+      console.error('Error:', error);
     }
   };
 
@@ -36,7 +37,7 @@ const Home = ({ temperature, setTemperature }) => {
       setLoading(true);
       const status = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('Please grant location permissions');
+        console.error('Please grant location permissions');
       }
 
       // Obtention de la position actuelle
