@@ -1,11 +1,15 @@
-// Importation des modules
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Text, View, Button, Platform, Linking, Alert,
 } from 'react-native';
+
+// Cela permet de récupérer le token de notifications (ajout après vidéo Expo Push Notifications)
+import registerNNPushToken from 'native-notify';
+
+// Importation des modules nécessaires aux notifications
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import { isDevice } from 'expo-device';
 
 //  Configuration des notifications
 Notifications.setNotificationHandler({
@@ -17,6 +21,7 @@ Notifications.setNotificationHandler({
 });
 
 // Fonction asynchrone numéro 1
+// Lance une notif avec un délai défini en secondes
 async function schedulePushNotification() {
   // On attend que la fonction suivante se termine avant de continuer l'exécution
   // C'est une fonction fournie par expo-notifications pour planifier l'envoi
@@ -32,11 +37,16 @@ async function schedulePushNotification() {
 
 // Fonction asynchrone numéro 2
 async function registerForPushNotificationsAsync() {
-  let token;
-  console.log('token at start', token);
-  if (Constants.isDevice) {
+  let token = '';
+
+  if (isDevice) {
+    // Obtention de l'état actuel des autorisations de notifications sur l'appareil
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    // On copie ce statut dans "finalStatus"
     let finalStatus = existingStatus;
+
+    // Dans le cas où les autorisations ne sont pas accordées
+    // On demande
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
@@ -54,13 +64,9 @@ async function registerForPushNotificationsAsync() {
       return;
     }
 
-    // if (finalStatus !== 'granted') {
-    // alert('Failed to get push token for push notification!');
-    // return;
-    // }
-
+    // A ce stade en principe on a bien récupéré le token
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    console.log('Nouveau Token : ', token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -78,6 +84,9 @@ async function registerForPushNotificationsAsync() {
 }
 
 export default function App() {
+  // Ajout après la vidéo Expo Push Notification
+  registerNNPushToken(12399, '3Zc1qAo6STNOM39kwWRbb3');
+
   // Création d'états pour stocker le jeton et les notifications
   // Utilisation de références pour écouter les notifications
   const [expoPushToken, setExpoPushToken] = useState('');
