@@ -27,5 +27,6 @@ module.exports = {
     'import/no-useless-path-segments': 'warn',
     'import/no-cycle': 'warn',
     'arrow-body-style': 'warn',
+    'consistent-return': 'warn',
   },
 };
