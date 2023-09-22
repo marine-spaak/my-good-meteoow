@@ -18,6 +18,8 @@ const Home = ({ temperature, setTemperature }) => {
   // Le "loading" permet d'afficher un chargement le temps d'avoir la réponse de l'API
   const [loading, setLoading] = useState(false);
   const [city, setCity] = useState('CURRENT CITY');
+  const [weatherIcon, setWeatherIcon] = useState('');
+  const [humidity, setHumidity] = useState(-900);
 
   const getWeatherFromApi = async (latitude, longitude) => {
     try {
@@ -25,8 +27,11 @@ const Home = ({ temperature, setTemperature }) => {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${APIkey}&units=metric`,
       );
+      console.log('data', response.data);
       setCity(response.data.name);
       setTemperature(response.data.main.temp);
+      setWeatherIcon(response.data.weather[0].icon);
+      setHumidity(response.data.main.humidity);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -69,6 +74,8 @@ const Home = ({ temperature, setTemperature }) => {
       <HomeNow
         temperature={temperature}
         loading={loading}
+        weatherIcon={weatherIcon}
+        humidity={humidity}
       />
 
       <HomeNextDays />
