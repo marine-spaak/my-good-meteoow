@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { View, Text, ActivityIndicator } from 'react-native';
 import style from '../Home.style';
-import WeatherCard from '../../Common/WeatherCard/WeatherCard';
+import { WeatherCard } from '../..';
 
 const HomeNow = ({ temperature, loading, weatherIcon, humidity }) => (
   <View style={style.homeSectionContainer}>
@@ -12,6 +12,7 @@ const HomeNow = ({ temperature, loading, weatherIcon, humidity }) => (
       : (
         <View style={style.homeSectionText}>
           <WeatherCard
+            date=""
             weatherIcon={weatherIcon}
             temperature={temperature}
             humidity={humidity}

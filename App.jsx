@@ -55,7 +55,6 @@ export default function App() {
   // Et les permissions
   async function registerForPushNotificationsAsync() {
     let token;
-    console.log('token at start', token);
     if (Constants.isDevice) {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;

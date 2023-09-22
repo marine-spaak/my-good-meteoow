@@ -9,6 +9,7 @@ const style = StyleSheet.create({
     padding: SIZES.large,
     alignItems: 'center',
     borderRadius: SIZES.medium,
+    marginRight: SIZES.medium,
   },
 
   cardImage: {

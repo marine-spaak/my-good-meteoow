@@ -20,6 +20,7 @@ const Home = ({ temperature, setTemperature }) => {
   const [city, setCity] = useState('CURRENT CITY');
   const [weatherIcon, setWeatherIcon] = useState('');
   const [humidity, setHumidity] = useState(-900);
+  const [nextDaysForecastData, setNextDaysForecastData] = useState([]);
 
   const getWeatherFromApi = async (latitude, longitude) => {
     try {
@@ -27,11 +28,23 @@ const Home = ({ temperature, setTemperature }) => {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${APIkey}&units=metric`,
       );
-      console.log('data', response.data);
       setCity(response.data.name);
       setTemperature(response.data.main.temp);
       setWeatherIcon(response.data.weather[0].icon);
       setHumidity(response.data.main.humidity);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const getWeatherForecastFromApi = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${APIkey}&units=metric`,
+      );
+      const forecastData = response.data.list;
+      const slicedForecastData = forecastData.slice(0, 5); // Je ne garde que les 5 premiers
+      setNextDaysForecastData(slicedForecastData);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -51,6 +64,10 @@ const Home = ({ temperature, setTemperature }) => {
 
       // Appel de la méthode getWeatherFromApi avec les bonnes coordonnées
       await getWeatherFromApi(latitude, longitude);
+
+      // Appel de la méthode getWeatherForecastFromApi avec les bonnes coordonnées
+      // Pour les prochains jours
+      await getWeatherForecastFromApi(latitude, longitude);
     } catch (error) {
       console.error('Error', error);
     } finally {
@@ -78,7 +95,9 @@ const Home = ({ temperature, setTemperature }) => {
         humidity={humidity}
       />
 
-      <HomeNextDays />
+      <HomeNextDays
+        nextDaysForecastData={nextDaysForecastData}
+      />
     </ScrollView>
   );
 };
